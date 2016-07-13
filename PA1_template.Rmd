@@ -46,3 +46,4 @@ intsteps$mean.steps <- round(intsteps$mean.steps)
 intsteps$median.steps <- round(intsteps$median.steps)
 ggplot(intsteps, aes(x = interval, y = mean.steps)) + geom_line()
 ```
+As can be seen from the plots above the user appears to start walking around later at weekends (maybe they sleep later). Once they are awake they tend to take more steps and to be walking around (awake?) later in the day.
