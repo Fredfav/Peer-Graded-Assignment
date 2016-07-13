@@ -1,0 +1,48 @@
+Loading and preprocessing the data
+-----------------------------------
+
+```{r}
+library(plyr) 
+library(ggplot2) 
+activity <- read.csv("activity.csv") # read in the data 
+activity$date <- as.POSIXct(activity$date) # set the dates to POSIXct
+```
+What is mean total number of steps taken per day?
+-------------------------------------------------
+
+## Calculate the total number of steps taken per day
+```{r}
+dailysteps <- aggregate(activity$steps, by = list(activity$date), sum, na.rm=TRUE)
+names(dailysteps) <- c("Date", "steps")
+```
+
+## Make a histogram of the total number of steps taken each day
+```{r}
+qplot(steps, data = dailysteps, geom="histogram", xlab = "Daily Number of Steps", binwidth = 300)
+```
+
+```{r}
+mean.steps <- mean(dailysteps$steps) 
+median.steps <- median(dailysteps$steps)
+```
+The mean number of steps each day is 9354 
+The median number of steps each day is 10395
+
+What is the average daily activity pattern?
+-------------------------------------------
+
+## df of the mean and median number of steps taken, averaged across all days (y-axis)
+
+```{r}
+intsteps <- aggregate(activity$steps, by = list(activity$interval), mean, na.rm=TRUE)
+intstepsmed <- aggregate(activity$steps, by = list(activity$interval), median, na.rm=TRUE)
+intsteps <- cbind(intsteps[], intstepsmed$x)
+```
+## Tidy the df names and round the numbers
+
+```{r}
+names(intsteps) = c("interval","mean.steps", "median.steps")
+intsteps$mean.steps <- round(intsteps$mean.steps)
+intsteps$median.steps <- round(intsteps$median.steps)
+ggplot(intsteps, aes(x = interval, y = mean.steps)) + geom_line()
+```
